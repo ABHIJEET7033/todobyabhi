@@ -1,10 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import todo from "../images/todo.png"
 import '../App.css';
 
+
+const getLocalItems=() =>{
+    let list=localStorage.getItem('lists');
+    if(list){
+        return JSON.parse(localStorage.getItem('lists'));
+    }
+    else{
+    return [];
+    }
+
+}
 const Todo = () => {
     const [inputData,setInputData]=useState();
-    const [items,setItems] = useState([]);
+    const [items,setItems] = useState(getLocalItems());
     const [toggleSubmit,setToggleSubmit]=useState(true);
     const[isEditItem,setIsEditItem]=useState(null);
     const addItem = ()=>{
@@ -54,6 +65,11 @@ const Todo = () => {
     const removeAll = () =>{
         setItems([]);
     }
+
+    useEffect(() =>{
+         localStorage.setItem('lists',JSON.stringify(items))
+    },[items]);
+
     return (
         <>
             <div className="main-div">
